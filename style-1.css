@@ -1,0 +1,463 @@
+<style>
+/* =============================================
+   POPUP OVERLAY
+   ============================================= */
+#popupOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+#popupOverlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* =============================================
+   POPUP BOX
+   ============================================= */
+#popupBox {
+    background: linear-gradient(160deg, #1a0000 0%, #2d0505 40%, #1c0a0a 100%);
+    color: #fff;
+    width: 94%;
+    max-width: 520px;
+    border-radius: 20px;
+    padding: 28px 26px 24px;
+    text-align: center;
+    position: relative;
+    border: 1px solid rgba(220, 30, 30, 0.25);
+    box-shadow:
+        0 0 0 1px rgba(180, 20, 20, 0.15),
+        0 24px 70px rgba(0, 0, 0, 0.7),
+        0 0 100px rgba(180, 20, 20, 0.12);
+    animation: popupIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popupIn {
+    from { transform: scale(0.78) translateY(24px); opacity: 0; }
+    to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* =============================================
+   CLOSE BUTTON
+   ============================================= */
+#popupClose {
+    position: absolute;
+    top: 14px; right: 16px;
+    width: 30px; height: 30px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 15px;
+    color: #aaa;
+    transition: background 0.2s, color 0.2s, transform 0.25s;
+    user-select: none;
+}
+#popupClose:hover {
+    background: rgba(200, 30, 30, 0.3);
+    color: #fff;
+    border-color: rgba(200, 30, 30, 0.5);
+    transform: rotate(90deg);
+}
+
+/* =============================================
+   BADGE
+   ============================================= */
+.popupBadge {
+    display: inline-block;
+    background: linear-gradient(90deg, #c0392b, #922b21);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(255, 80, 80, 0.3);
+}
+
+/* =============================================
+   IMAGE
+   ============================================= */
+.popupImg {
+    width: 100%;
+    border-radius: 13px;
+    margin-bottom: 16px;
+    display: block;
+    border: 1px solid rgba(200, 30, 30, 0.2);
+}
+
+/* =============================================
+   TITLE & SUBTITLE
+   ============================================= */
+.popupTitle {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 5px;
+    letter-spacing: 0.3px;
+}
+.popupSubtitle {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+
+/* =============================================
+   DIVIDER
+   ============================================= */
+.popupDivider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200, 30, 30, 0.4), transparent);
+    margin: 14px 0;
+}
+
+/* =============================================
+   TABLE
+   ============================================= */
+.popupTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+.popupTable tr:not(:last-child) td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.popupTable td {
+    padding: 10px 6px;
+}
+.popupTable td:first-child {
+    text-align: left;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 13px;
+}
+.popupTable td:last-child {
+    text-align: right;
+    font-weight: 700;
+    color: #ff6b6b;
+    font-size: 15px;
+}
+
+/* =============================================
+   BUTTONS
+   ============================================= */
+.popupBtnWrap {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+.popupBtn {
+    flex: 1;
+    padding: 13px 10px;
+    border-radius: 11px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.18s, box-shadow 0.18s;
+    letter-spacing: 0.4px;
+    display: inline-block;
+}
+.popupBtn:active {
+    transform: scale(0.97);
+}
+
+.btnLogin {
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.btnLogin:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+}
+
+.btnDaftar {
+    background: linear-gradient(135deg, #c0392b, #7b241c);
+    color: #fff;
+    box-shadow: 0 5px 20px rgba(160, 30, 20, 0.5);
+    border: 1px solid rgba(255, 80, 80, 0.2);
+}
+.btnDaftar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(160, 30, 20, 0.65);
+}
+
+/* =============================================
+   CATATAN KECIL
+   ============================================= */
+.popupNote {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.2);
+    margin-top: 14px;
+}
+
+/* =============================================
+   MOBILE
+   ============================================= */
+@media (max-width: 480px) {
+    #popupBox {
+        padding: 20px 16px 18px;
+    }
+    .popupTitle {
+        font-size: 17px;
+    }
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "ID";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+color:#000;
+}
+
+input:checked + .slider {
+  background-color: #ccc;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+content:"EN";
+color:#000;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+body.onestepcheckout-index-index [type=radio] {cursor:pointer;} 
+
+@media only screen and (max-width: 768px) {
+    .catalog-product-view.page-product-configurable #maincontent .column.main .product-info-wrapper {
+        gap: 0;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .page-product-configurable #maincontent .column.main .product-info-wrapper .page-title-wrapper.product h1.page-title {
+        margin-top: 0;
+    }
+}
+
+.header_panel_info ul{
+display:flex;
+column-gap: 20px;
+list-style: none;
+}
+.header_panel_info img{
+margin-right:10px;
+}
+.panel.header div {
+    width: 100%;
+}
+.top-header-components-mc {
+    display: flex;
+    justify-content: space-between;
+}
+.lang-switch-mc li {
+    list-style: none;
+}
+@media only screen and (max-width: 769px) {
+  .header_panel_info ul {
+    flex-direction: column;
+}
+}
+
+        .mpstorepickup-available-store-info {
+            width: 78%;
+        }
+
+        .mpstorepickup-pcs {
+            right: 0;
+            font-weight: 600;
+            position: absolute;
+            width: 20%;
+            padding-right: 12px;
+        }
+
+        .mpstorepickup-available {
+            display: inline-flex;
+            width: 100%;
+            margin-bottom: 20px
+        }
+        .mpstorepickup-available-content .pickup-checkbox {
+            margin-top: -20px;
+        }
+        /*.mpstorepickup-pcs.not-is-simple{*/
+        /*    display: none;*/
+        /*}*/
+        .mpstorepickup-pcs .count:after{
+            content:' pcs.'
+        }
+        #mpstorepickup-available-popup .store-pickup {
+            margin-bottom: 14px;
+        }
+
+    .mpstorepickup-available-content .pickup-checkbox {
+        cursor: pointer;
+    }
+    .mfp-wrap {
+        position: fixed;
+        overflow: auto;
+    }
+
+/* Add Animation */
+@media screen and (max-width: 767px){
+        #myModals{
+        animation: mymovess 2s;
+        animation-fill-mode: forwards;
+    }
+    }
+    @keyframes mymovess {
+  from {bottom: 0px;}
+  to {bottom: 200px;}
+}
+
+h5#content-baby {
+    font-family: 'Mothercare 2020';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 150%;
+    text-align: center;
+    letter-spacing: -0.011em;
+    color: #165C7D;
+}
+h5#content-baby {
+    font-family: 'Mothercare 2020';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 150%;
+    text-align: center;
+    letter-spacing: -0.011em;
+    color: #165C7D;
+    margin-bottom: 1em;
+}
+a.sizechart-link{
+    position: relative;
+    top: -20.5em;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    text-align: left;
+    text-decoration-line: underline;
+    text-transform: lowercase;
+    color: #165C7D;
+    font-family: 'mothercare_2020-regular-webfont';
+}
+@media screen and (max-width: 767px){
+  a.sizechart-link{
+    top: -17.5em;
+  }
+}
+
+#html-body [data-pb-style=DK3T6M7],#html-body [data-pb-style=EXLLNWK]{background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}#html-body [data-pb-style=EXLLNWK]{justify-content:flex-start;display:flex;flex-direction:column}#html-body [data-pb-style=DK3T6M7]{align-self:stretch}#html-body [data-pb-style=OAID5MY]{display:flex;width:100%}#html-body [data-pb-style=CEU4VQX],#html-body [data-pb-style=IQTQM3Q],#html-body [data-pb-style=PO3J8MC],#html-body [data-pb-style=WG4K5JH]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;width:25%;align-self:stretch}#html-body [data-pb-style=R8KNU7R]{text-align:left}
+.footer-desktop {display:block;}
+.footer-mobile {display:none;}
+@media screen and (max-width: 769px) {
+.footer-desktop {display:none !important;}
+.footer-mobile {display:block;}
+}
+
+@media (min-width:768px){
+.footer-google-play-img {
+    width: 70%;
+}
+
+}
+
+.cms-page-view .breadcrumbs {
+display:none;
+}
+    
+.checkout-cart-index .cart-container .cart-summary .kredivo-label {
+    display: block;
+}
+.cms-page-view .breadcrumbs {
+display:none;
+}
+.category-description .pagebuilder-banner-wrapper   {
+    width: 100%;
+    height: 0;
+    padding-top: 25%;
+}
+@media screen and (max-width: 767px) {
+.category-description .pagebuilder-banner-wrapper   {
+    width: 100%;
+    height: 0;
+    padding-top: 50%;
+}
+.accept-pay {
+width: 100% !important;
+    text-align: left !important;
+    margin-bottom: 15px;
+}
+}
+
+
+@media only screen and (min-width: 1024px){
+
+.catalog-category-view .products-grid .product-items .product-item, .catalogsearch-result-index .products-grid .product-items .product-item, .catalog-category-view [data-appearance=carousel] .product-items .product-item, .catalogsearch-result-index [data-appearance=carousel] .product-items .product-item {
+margin:0 26px 35px;
+}
+}
+</style>
